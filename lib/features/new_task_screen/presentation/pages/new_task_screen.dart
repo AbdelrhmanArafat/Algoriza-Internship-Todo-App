@@ -1,7 +1,8 @@
 import 'package:algoriza_todo/core/utils/blocs/cubit.dart';
 import 'package:algoriza_todo/core/utils/blocs/states.dart';
 import 'package:algoriza_todo/core/utils/widgets/my_button.dart';
-import 'package:algoriza_todo/features/new_task_screen/presentation/pages/my_dropdown_button.dart';
+import 'package:algoriza_todo/features/board_screen/presentation/pages/board_screen.dart';
+import 'package:algoriza_todo/features/new_task_screen/presentation/widgets/my_dropdown_button.dart';
 import 'package:algoriza_todo/core/utils/widgets/my_text_form_filed.dart';
 import 'package:algoriza_todo/features/new_task_screen/presentation/widgets/text_widget.dart';
 import 'package:algoriza_todo/main.dart';
@@ -194,7 +195,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MyApp()),
+                              builder: (context) => const BoardScreen()),
                         );
                       }
                     },

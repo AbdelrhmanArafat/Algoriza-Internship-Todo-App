@@ -2,7 +2,6 @@
 
 import 'dart:developer';
 import 'package:algoriza_todo/core/utils/blocs/states.dart';
-import 'package:algoriza_todo/core/utils/models/task_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
