@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 
-class MyDropDownButton extends StatefulWidget {
+class MyDropDownButton extends StatelessWidget {
   const MyDropDownButton({Key? key}) : super(key: key);
 
   @override
-  State<MyDropDownButton> createState() => _MyDropDownButtonState();
-}
-
-class _MyDropDownButtonState extends State<MyDropDownButton> {
-  String? dropdownValue;
-  final items = [
-    '1 day before',
-    '1 hour before',
-    '30 min before',
-    '10 min before'
-  ];
-  @override
   Widget build(BuildContext context) {
+    String? dropdownValue;
+    final items = [
+      '1 day before',
+      '1 hour before',
+      '30 min before',
+      '10 min before'
+    ];
     return Container(
       margin: const EdgeInsets.all(5),
       width: double.infinity,
@@ -34,7 +29,7 @@ class _MyDropDownButtonState extends State<MyDropDownButton> {
           iconSize: 30,
           elevation: 16,
           onChanged: (newValue) {
-            setState(() => dropdownValue = newValue);
+            dropdownValue = newValue;
           },
           items: items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(

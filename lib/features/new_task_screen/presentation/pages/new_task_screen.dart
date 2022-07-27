@@ -149,7 +149,9 @@ class NewTaskScreen extends StatelessWidget {
                             type: TextInputType.datetime,
                             hintText: '10 minutes early',
                             validator: 'reminder can not be empty',
-                            onTap: () {},
+                            onTap: () {
+                              MyDropDownButton();
+                            },
                           ),
                           const SizedBox(height: 20),
                           const TextWidget(text: 'Repeat'),
