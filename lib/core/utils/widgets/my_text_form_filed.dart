@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyTextFromFiled extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType type;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
   final String hintText;
   final IconData? suffix;
   final double radius;
@@ -16,7 +16,7 @@ class MyTextFromFiled extends StatelessWidget {
     required this.hintText,
     this.radius = 10,
     required this.validator,
-    required this.onTap,
+    this.onTap,
     this.suffix,
   }) : super(key: key);
 

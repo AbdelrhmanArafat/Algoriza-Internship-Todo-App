@@ -56,7 +56,6 @@ class NewTaskScreen extends StatelessWidget {
                             type: TextInputType.name,
                             hintText: 'Design team meeting',
                             validator: 'title can not be empty',
-                            onTap: () {},
                           ),
                           const SizedBox(height: 20),
                           const TextWidget(text: 'Date'),
@@ -65,7 +64,7 @@ class NewTaskScreen extends StatelessWidget {
                           MyTextFromFiled(
                             controller: dateController,
                             type: TextInputType.datetime,
-                            hintText: '2021-02-28',
+                            hintText: DateFormat.yMMMd().format(DateTime.now()),
                             validator: 'date can not be empty',
                             onTap: () {
                               showDatePicker(
@@ -83,18 +82,17 @@ class NewTaskScreen extends StatelessWidget {
                             suffix: Icons.keyboard_arrow_down,
                           ),
                           const SizedBox(height: 20),
-                          //Timing
+                          //Timing Row
                           Row(
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const TextWidget(text: 'Start time'),
-                                  const SizedBox(height: 5),
-                                  //Start Time
-                                  SizedBox(
-                                    width: 180,
-                                    child: MyTextFromFiled(
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const TextWidget(text: 'Start time'),
+                                    const SizedBox(height: 5),
+                                    //Start Time
+                                    MyTextFromFiled(
                                       controller: startTimeController,
                                       type: TextInputType.datetime,
                                       hintText: '11:00 Am',
@@ -110,19 +108,18 @@ class NewTaskScreen extends StatelessWidget {
                                       },
                                       suffix: Icons.access_time,
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const TextWidget(text: 'End time'),
-                                  const SizedBox(height: 5),
-                                  //End Time
-                                  SizedBox(
-                                    width: 180,
-                                    child: MyTextFromFiled(
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const TextWidget(text: 'End time'),
+                                    const SizedBox(height: 5),
+                                    //End Time
+                                    MyTextFromFiled(
                                       controller: endTimeController,
                                       type: TextInputType.datetime,
                                       hintText: '14:00 Pm',
@@ -138,8 +135,8 @@ class NewTaskScreen extends StatelessWidget {
                                       },
                                       suffix: Icons.access_time,
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -182,11 +179,12 @@ class NewTaskScreen extends StatelessWidget {
                           remind: remindController.text,
                           repeat: repeatController.text,
                         );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyApp()),
+                        );
                       }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyApp()),
-                      );
                     },
                     text: 'Create a Task',
                   ),

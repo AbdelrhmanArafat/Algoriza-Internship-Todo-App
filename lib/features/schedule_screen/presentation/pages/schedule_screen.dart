@@ -1,9 +1,6 @@
-// ignore_for_file: avoid_print
-
-import 'package:algoriza_todo/core/utils/date_picker/date_picker_timeline.dart';
+import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_clean_calendar/flutter_clean_calendar.dart';
+import 'package:intl/intl.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
@@ -13,50 +10,7 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  DateTime? selectedDay;
-  late List<CleanCalendarEvent> selectedEvent;
-
-  final Map<DateTime, List<CleanCalendarEvent>> events = {
-    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day): [
-      CleanCalendarEvent('Event A',
-          startTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 10, 0),
-          endTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 12, 0),
-          description: 'A special event',
-          color: Colors.blue),
-    ],
-    DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2):
-        [
-      CleanCalendarEvent('Event B',
-          startTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 10, 0),
-          endTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 12, 0),
-          color: Colors.orange),
-      CleanCalendarEvent('Event C',
-          startTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 14, 30),
-          endTime: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day + 2, 17, 0),
-          color: Colors.pink),
-    ],
-  };
-
-  void _handleData(date) {
-    setState(() {
-      selectedDay = date;
-      selectedEvent = events[selectedDay] ?? [];
-    });
-    print(selectedDay);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    selectedEvent = events[selectedDay] ?? [];
-    super.initState();
-  }
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -72,34 +26,56 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: SafeArea(
-        child: Calendar(
-          bottomBarArrowColor: Colors.black,
-          startOnMonday: true,
-          selectedColor: Colors.blue,
-          todayColor: Colors.green,
-          eventColor: Colors.red,
-          eventDoneColor: Colors.amber,
-          bottomBarColor: Colors.deepOrange,
-          onRangeSelected: (range) {
-            print('selected Day ${range.from},${range.to}');
-          },
-          onDateSelected: (date) {
-            return _handleData(date);
-          },
-          events: events,
-          isExpanded: true,
-          dayOfWeekStyle: const TextStyle(
-            fontSize: 15,
-            color: Colors.black12,
-            fontWeight: FontWeight.w100,
-          ),
-          bottomBarTextStyle: const TextStyle(
-            color: Colors.black,
-          ),
-          hideBottomBar: false,
-          hideArrows: false,
-          weekDays: const ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            DatePicker(
+              DateTime.now(),
+              height: 60,
+              width: 50,
+              initialSelectedDate: DateTime.now(),
+              selectionColor: Colors.green,
+              selectedTextColor: Colors.white,
+              dateTextStyle: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+              dayTextStyle: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+              monthTextStyle: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+              onDateChange: (date) {
+                selectedDate = date;
+              },
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  DateFormat.EEEE().format(DateTime.now()),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  DateFormat.yMMMM().format(DateTime.now()),
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );

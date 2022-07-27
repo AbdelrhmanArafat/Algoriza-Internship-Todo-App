@@ -2,8 +2,11 @@ import 'package:algoriza_todo/core/utils/blocs/cubit.dart';
 import 'package:algoriza_todo/core/utils/blocs/states.dart';
 import 'package:algoriza_todo/core/utils/widgets/my_button.dart';
 import 'package:algoriza_todo/features/all_task_screen/presentation/pages/all_task_screen.dart';
+import 'package:algoriza_todo/features/completed_task_screen/presentation/pages/completed_task_screen.dart';
+import 'package:algoriza_todo/features/favorite_task_screen/presentation/pages/favorite_task_screen.dart';
 import 'package:algoriza_todo/features/new_task_screen/presentation/pages/new_task_screen.dart';
 import 'package:algoriza_todo/features/schedule_screen/presentation/pages/schedule_screen.dart';
+import 'package:algoriza_todo/features/uncompleted_task_screen/presentation/pages/uncompleted_task_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,13 +64,13 @@ class BoardScreen extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  Expanded(
+                  const Expanded(
                     child: TabBarView(
                       children: [
-                        const AllTaskScreen(),
-                        Container(color: Colors.yellow),
-                        Container(color: Colors.red),
-                        Container(color: Colors.grey),
+                        AllTaskScreen(),
+                        CompletedTaskScreen(),
+                        UncompletedTaskScreen(),
+                        FavoriteTaskScreen(),
                       ],
                     ),
                   ),

@@ -40,6 +40,7 @@ dependencies:
   conditional_builder_null_safety: ^0.0.6
   awesome_dropdown: ^0.0.4
   flutter_clean_calendar: ^1.1.0
+  date_picker_timeline: ^1.2.3
 
 dev_dependencies:
   flutter_test:
