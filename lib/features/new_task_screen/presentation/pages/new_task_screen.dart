@@ -9,9 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class NewTaskScreen extends StatelessWidget {
+class NewTaskScreen extends StatefulWidget {
   const NewTaskScreen({Key? key}) : super(key: key);
 
+  @override
+  State<NewTaskScreen> createState() => _NewTaskScreenState();
+}
+
+class _NewTaskScreenState extends State<NewTaskScreen> {
+  String? dropdownValue;
+  List<String> items = [
+    '1 day before',
+    '1 hour before',
+    '30 min before',
+    '10 min before'
+  ];
   @override
   Widget build(BuildContext context) {
     AppCubit cubit = AppCubit.get(context);
@@ -79,7 +91,7 @@ class NewTaskScreen extends StatelessWidget {
                                 },
                               );
                             },
-                            suffix: Icons.keyboard_arrow_down,
+                            suffix: const Icon(Icons.keyboard_arrow_down),
                           ),
                           const SizedBox(height: 20),
                           //Timing Row
@@ -106,7 +118,7 @@ class NewTaskScreen extends StatelessWidget {
                                               value!.format(context).toString();
                                         });
                                       },
-                                      suffix: Icons.access_time,
+                                      suffix: const Icon(Icons.access_time),
                                     ),
                                   ],
                                 ),
@@ -133,7 +145,7 @@ class NewTaskScreen extends StatelessWidget {
                                               value!.format(context).toString();
                                         });
                                       },
-                                      suffix: Icons.access_time,
+                                      suffix: const Icon(Icons.access_time),
                                     ),
                                   ],
                                 ),
@@ -149,9 +161,7 @@ class NewTaskScreen extends StatelessWidget {
                             type: TextInputType.datetime,
                             hintText: '10 minutes early',
                             validator: 'reminder can not be empty',
-                            onTap: () {
-                              MyDropDownButton();
-                            },
+                            suffix: const Icon(Icons.keyboard_arrow_down),
                           ),
                           const SizedBox(height: 20),
                           const TextWidget(text: 'Repeat'),
@@ -163,7 +173,7 @@ class NewTaskScreen extends StatelessWidget {
                             hintText: 'weekly',
                             validator: 'repeat can not be empty',
                             onTap: () {},
-                            suffix: Icons.keyboard_arrow_down,
+                            suffix: const Icon(Icons.keyboard_arrow_down),
                           ),
                         ],
                       ),

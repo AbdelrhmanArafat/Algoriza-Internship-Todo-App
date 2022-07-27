@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class MyTextFromFiled extends StatelessWidget {
-  final TextEditingController controller;
-  final TextInputType type;
+  final TextEditingController? controller;
+  final TextInputType? type;
   final GestureTapCallback? onTap;
   final String hintText;
-  final IconData? suffix;
+  final Widget? suffix;
   final double radius;
   final String validator;
 
   const MyTextFromFiled({
     Key? key,
-    required this.controller,
-    required this.type,
+    this.controller,
+    this.type,
     required this.hintText,
     this.radius = 10,
     required this.validator,
@@ -23,12 +23,13 @@ class MyTextFromFiled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: false,
       controller: controller,
       keyboardType: type,
       onTap: onTap,
       decoration: InputDecoration(
         hintText: hintText,
-        suffixIcon: Icon(suffix),
+        suffixIcon: suffix,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(radius),
         ),

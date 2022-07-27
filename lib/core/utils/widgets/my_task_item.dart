@@ -18,7 +18,10 @@ class MyTaskItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.check_box_outlined),
+          icon: const Icon(
+            Icons.check_box_outlined,
+            color: Colors.black,
+          ),
           onPressed: () {
             AppCubit.get(context).updateData(
               status: 'done',
@@ -26,7 +29,14 @@ class MyTaskItem extends StatelessWidget {
             );
           },
         ),
-        title: Text(model['title']),
+        title: Text(
+          model['title'],
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

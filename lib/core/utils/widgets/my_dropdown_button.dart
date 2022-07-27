@@ -6,7 +6,7 @@ class MyDropDownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? dropdownValue;
-    final items = [
+    List<String> items = [
       '1 day before',
       '1 hour before',
       '30 min before',
@@ -35,7 +35,7 @@ class MyDropDownButton extends StatelessWidget {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(
-                value,
+                value.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
