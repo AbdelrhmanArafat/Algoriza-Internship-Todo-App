@@ -8,7 +8,6 @@ class MyTextFromFiled extends StatelessWidget {
   final Widget? suffix;
   final double radius;
   final String validator;
-  final Widget? widget;
 
   const MyTextFromFiled({
     Key? key,
@@ -19,14 +18,11 @@ class MyTextFromFiled extends StatelessWidget {
     required this.validator,
     this.onTap,
     this.suffix,
-    this.widget,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      readOnly: widget == null ? false : true,
-      autofocus: false,
       controller: controller,
       keyboardType: type,
       onTap: onTap,
