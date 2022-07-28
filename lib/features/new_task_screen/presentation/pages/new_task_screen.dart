@@ -18,7 +18,8 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
-  String? dropdownValue;
+  String dropdownValue = '10 min before';
+  int selectReminder = 10;
   List<String> items = [
     '1 day before',
     '1 hour before',

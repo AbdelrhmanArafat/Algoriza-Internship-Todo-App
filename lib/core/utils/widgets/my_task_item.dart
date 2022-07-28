@@ -38,6 +38,11 @@ class MyTaskItem extends StatelessWidget {
           ),
         ),
       ),
+      onDismissed: (direction) {
+        AppCubit.get(context).deleteData(
+          id: model['id'],
+        );
+      },
     );
   }
 }
