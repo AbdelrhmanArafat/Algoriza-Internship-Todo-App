@@ -37,26 +37,26 @@ class BoardScreen extends StatelessWidget {
                 )
               ],
               title: const Text(
-                'Board',
+                'Todo App',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               bottom: const TabBar(
+                isScrollable: true,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicatorColor: Colors.black87,
+                labelColor: Colors.black,
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
                 tabs: [
-                  Tab(
-                      child:
-                          Text('All', style: TextStyle(color: Colors.black))),
-                  Tab(
-                      child: Text('Completed',
-                          style: TextStyle(color: Colors.black))),
-                  Tab(
-                      child: Text('Uncompleted',
-                          style: TextStyle(color: Colors.black))),
-                  Tab(
-                      child: Text('Favorite',
-                          style: TextStyle(color: Colors.black))),
+                  Tab(text: 'All'),
+                  Tab(text: 'Completed'),
+                  Tab(text: 'Uncompleted'),
+                  Tab(text: 'Favorite'),
                 ],
               ),
             ),
@@ -80,7 +80,8 @@ class BoardScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const NewTaskScreen()),
+                          builder: (context) => const NewTaskScreen(),
+                        ),
                       );
                     },
                     text: 'Add a task',

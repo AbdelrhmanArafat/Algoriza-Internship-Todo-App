@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:developer';
+import 'package:algoriza_todo/core/models/task_model.dart';
 import 'package:algoriza_todo/core/utils/blocs/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,12 +12,7 @@ class AppCubit extends Cubit<AppStates> {
 
   static AppCubit get(context) => BlocProvider.of<AppCubit>(context);
 
-  late Database database;
-
-  List<Map> allTasks = [];
-  List<Map> completedTasks = [];
-  List<Map> uncompletedTasks = [];
-  List<Map> favoriteTasks = [];
+  Database? database;
 
   void createDatabase() {
     openDatabase(
@@ -26,7 +22,17 @@ class AppCubit extends Cubit<AppStates> {
         debugPrint('Database Created');
         database
             .execute(
-          'CREATE TABLE Todo (id INTEGER PRIMARY KEY, title TEXT,date TEXT, startTime TEXT, endTime TEXT, remind TEXT, repeat TEXT, status TEXT)',
+          'CREATE TABLE Todo ('
+          'id INTEGER PRIMARY KEY,'
+          'title TEXT,'
+          'date TEXT,'
+          'startTime TEXT,'
+          'endTime TEXT,'
+          'remind TEXT,'
+          'repeat TEXT,'
+          'color INTEGER,'
+          'completed INTEGER,'
+          'favorite INTEGER)',
         )
             .then((value) {
           debugPrint('Table Created');
@@ -35,7 +41,7 @@ class AppCubit extends Cubit<AppStates> {
         });
       },
       onOpen: (db) {
-        getFromDatabase(db);
+        getTaskFromDatabase();
         debugPrint('Database Opened');
       },
     ).then((value) {
@@ -44,85 +50,151 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void getFromDatabase(database) async {
-    allTasks = [];
-    completedTasks = [];
-    uncompletedTasks = [];
-    favoriteTasks = [];
+  List<TaskModel> allTasks = [];
+
+  void getTaskFromDatabase() async {
     emit(AppLoadingDatabaseState());
-    await database.rawQuery('SELECT * FROM Todo').then(
+    allTasks = [];
+    database?.rawQuery('SELECT * FROM Todo').then(
       (value) {
-        log('$value get from database');
-        for (Map element in value) {
-          if (element['status'] == 'new') {
-            allTasks.add(element);
-            uncompletedTasks.add(element);
-          }
-          if (element['status'] == 'done') {
-            allTasks.add(element);
-            completedTasks.add(element);
-          }
-          if (element['status'] == 'favorite') {
-            allTasks.add(element);
-            favoriteTasks.add(element);
-          }
+        debugPrint('${value.toString()} get task from database');
+        for (var element in value) {
+          allTasks.add(
+            TaskModel.fromJson(element),
+          );
         }
-        emit(AppGetFromDatabaseState());
+
+        emit(AppGetTaskFromDatabaseState());
       },
     );
   }
 
-  insertDatabase({
-    required String title,
-    required String date,
-    required String startTime,
-    required String endTime,
-    required String remind,
-    required String repeat,
-  }) async {
-    await database.transaction(
+  TextEditingController titleController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController startTimeController = TextEditingController();
+  TextEditingController endTimeController = TextEditingController();
+  TextEditingController remindController = TextEditingController();
+  TextEditingController repeatController = TextEditingController();
+
+  void insertTaskToDatabase() async {
+    await database?.transaction(
       (txn) async {
-        txn
-            .rawInsert(
-          'INSERT INTO Todo(title, date, startTime, endTime, remind, repeat, status) VALUES("$title", "$date", "$startTime", "$endTime", "$remind", "$repeat", "new")',
-        )
-            .then(
-          (value) {
-            print('$value insert successfully');
-            emit(AppInsertDatabaseState());
-            getFromDatabase(database);
-          },
-        ).catchError(
-          (error) {
-            print('Error on insert data ${error.toString()}');
-          },
+        await txn.rawInsert(
+          'INSERT INTO Todo('
+          'title,'
+          'date,'
+          'startTime,'
+          'endTime,'
+          'remind,'
+          'repeat,'
+          'color,'
+          'completed,'
+          'favorite)'
+          'VALUES('
+          '"${titleController.text}",'
+          '"${dateController.text}",'
+          '"${startTimeController.text}",'
+          '"${endTimeController.text}",'
+          '"${remindController.text}",'
+          '"${repeatController.text}",'
+          '"$selectedTaskColor",'
+          '0,'
+          '0)',
         );
+        debugPrint('Task Inserted');
+      },
+    ).then(
+      (value) {
+        print('${value.toString()} insert successfully');
+        titleController.clear();
+        dateController.clear();
+        startTimeController.clear();
+        endTimeController.clear();
+        remindController.clear();
+        repeatController.clear();
+        getTaskFromDatabase();
+        emit(AppInsertTaskToDatabaseState());
+      },
+    ).catchError(
+      (error) {
+        log('Error on insert data ${error.toString()}');
       },
     );
   }
 
-  void updateData({
-    required String status,
-    required int id,
-  }) async {
-    database.rawUpdate(
-      'UPDATE Todo SET status = ? WHERE id = ?',
-      [status, id],
-    ).then((value) {
-      getFromDatabase(database);
-      emit(AppUpdateDatabaseState());
+  void updateCompleteTask(int taskId) async {
+    int completed =
+        allTasks.firstWhere((element) => element.id == taskId).completed == 1
+            ? 0
+            : 1;
+
+    database?.rawUpdate('UPDATE Todo SET completed = ? WHERE id = $taskId',
+        [completed]).then((value) {
+      debugPrint('Task Data Updated');
+      getTaskFromDatabase();
     });
   }
 
-  void deleteData({
-    required int id,
-  }) async {
-    database.rawDelete(
+  void updateFavoriteTask(int taskId) async {
+    int favorite =
+        allTasks.firstWhere((element) => element.id == taskId).favorite == 1
+            ? 0
+            : 1;
+
+    database?.rawUpdate('UPDATE Todo SET favorite = ? WHERE id = $taskId',
+        [favorite]).then((value) {
+      debugPrint('Task Data Updated');
+      getTaskFromDatabase();
+    });
+  }
+
+  void deleteTaskData({required int id}) async {
+    database?.rawDelete(
       'DELETE FROM Todo WHERE id = ?',
       [id],
     ).then((value) {
-      getFromDatabase(database);
-      emit(AppDeleteDatabaseState());
+      getTaskFromDatabase();
+      emit(AppDeleteTaskDataState());
     });
+  }
+
+  List<String> remindList = [
+    'None',
+    '10 minutes before',
+    '30 minutes before',
+    '1 hour before',
+    '1 day before',
+  ];
+
+  void setReminder(String value) {
+    remindController.text = value;
+    emit(AppRemindState());
+  }
+
+  List<String> repeatList = [
+    'None',
+    'Daily',
+    'Weekly',
+    'Monthly',
+  ];
+
+  void setRepeater(String value) {
+    repeatController.text = value;
+    emit(AppRepeatState());
+  }
+
+  int selectedTaskColor = 0;
+
+  List<MaterialColor> taskColorList = [
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.blue,
+    Colors.purple,
+  ];
+
+  void changeTaskColor(int value) {
+    selectedTaskColor = value;
+    emit(AppChangeColorIndexState());
   }
 } //AppCubit
